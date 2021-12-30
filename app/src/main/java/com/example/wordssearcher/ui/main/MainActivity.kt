@@ -1,6 +1,7 @@
 package com.example.wordssearcher.ui.main
 
 import android.os.Bundle
+import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.Toast
@@ -13,17 +14,31 @@ import com.example.wordssearcher.model.data.AppState
 import com.example.wordssearcher.model.data.DataModel
 import com.example.wordssearcher.ui.base.BaseActivity
 import com.example.wordssearcher.ui.main.adapter.MainAdapter
+import dagger.android.AndroidInjection
+import javax.inject.Inject
 
 class MainActivity : BaseActivity<AppState>() {
 
+    @Inject
+    internal lateinit var viewModelFactory: ViewModelProvider.Factory
+
     private lateinit var binding: ActivityMainBinding
-    override val model : MainActivityViewModel by lazy{
-        ViewModelProvider.NewInstanceFactory().create(MainActivityViewModel::class.java)
-    }
+    override lateinit var model: MainActivityViewModel
+    private val adapter: MainAdapter by lazy { MainAdapter(onListItemClickListener) }
+    // private val observer = Observer<AppState> { renderData(it) }
 
-    private var adapter: MainAdapter? = null
-    private val observer = Observer<AppState> { renderData(it) }
-
+    private val fabClickListener: View.OnClickListener =
+        View.OnClickListener {
+            val searchDialogFragment = SearchDialogFragment.newInstance()
+            searchDialogFragment.setOnSearchClickListener(onSearchClickListener)
+            searchDialogFragment.show(supportFragmentManager, BOTTOM_SHEET_FRAGMENT_DIALOG_TAG)
+        }
+    private val onSearchClickListener: SearchDialogFragment.OnSearchClickListener =
+        object : SearchDialogFragment.OnSearchClickListener {
+            override fun onClick(searchWord: String) {
+                model.getData(searchWord, true)
+            }
+        }
     private val onListItemClickListener: MainAdapter.OnListItemClickListener =
         object : MainAdapter.OnListItemClickListener {
             override fun onItemClick(data: DataModel) {
@@ -33,37 +48,29 @@ class MainActivity : BaseActivity<AppState>() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
+
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.searchFab.setOnClickListener {
-            val searchDialogFragment = SearchDialogFragment.newInstance()
-            searchDialogFragment.setOnSearchClickListener(object :
-                SearchDialogFragment.OnSearchClickListener {
-                override fun onClick(searchWord: String) {
-                    model.getData(searchWord, true).observe(this@MainActivity,observer)
-                }
-            })
-            searchDialogFragment.show(supportFragmentManager, BOTTOM_SHEET_FRAGMENT_DIALOG_TAG)
-        }
+
+        model = viewModelFactory.create(MainActivityViewModel::class.java)
+        model.subscribe().observe(this@MainActivity, Observer<AppState> { renderData(it) })
+        binding.searchFab.setOnClickListener(fabClickListener)
+        binding.mainActivityRecyclerview.layoutManager = LinearLayoutManager(applicationContext)
+        binding.mainActivityRecyclerview.adapter = adapter
     }
 
     override fun renderData(appState: AppState) {
         when (appState) {
             is AppState.Success -> {
+                showViewWorking()
                 val dataModel = appState.data
-                if (dataModel == null || dataModel.isEmpty()) {
+                if (dataModel.isNullOrEmpty()) {
                     showErrorScreen(getString(R.string.empty_server_response_on_success))
                 } else {
-                    showViewSuccess()
-                    if (adapter == null) {
-                        binding.mainActivityRecyclerview.layoutManager =
-                            LinearLayoutManager(applicationContext)
-                        binding.mainActivityRecyclerview.adapter =
-                            MainAdapter(onListItemClickListener, dataModel)
-                    } else {
-                        adapter!!.setData(dataModel)
-                    }
+
+                    adapter.setData(dataModel)
                 }
             }
             is AppState.Loading -> {
@@ -87,13 +94,13 @@ class MainActivity : BaseActivity<AppState>() {
         showViewError()
         binding.errorTextview.text = error ?: getString(R.string.undefined_error)
         binding.reloadButton.setOnClickListener {
-            model.getData("hi", true).observe(this, observer)
+            model.getData("hi", true)
         }
     }
 
-    private fun showViewSuccess() {
-        binding.successLinearLayout.visibility = VISIBLE
+    private fun showViewWorking() {
         binding.loadingFrameLayout.visibility = GONE
+        binding.successLinearLayout.visibility = VISIBLE
         binding.errorLinearLayout.visibility = GONE
     }
 

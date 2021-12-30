@@ -8,12 +8,12 @@ import com.example.wordssearcher.schedulers.SchedulerProvider
 import io.reactivex.disposables.CompositeDisposable
 
 abstract class BaseViewModel <T : AppState>(
-    protected val liveDataForViewToObserve: MutableLiveData<T> = MutableLiveData(),
-    protected val compositeDisposable: CompositeDisposable = CompositeDisposable(),
-    protected val schedulerProvider: SchedulerProvider = SchedulerProvider()
+    protected open val liveDataForViewToObserve: MutableLiveData<T> = MutableLiveData(),
+    protected open val compositeDisposable: CompositeDisposable = CompositeDisposable(),
+    protected open val schedulerProvider: SchedulerProvider = SchedulerProvider()
 ) : ViewModel() {
 
-    open fun getData(word: String, isOnline: Boolean): LiveData<T> = liveDataForViewToObserve
+    abstract fun getData(word: String, isOnline: Boolean)
 
     override fun onCleared() {
         compositeDisposable.clear()

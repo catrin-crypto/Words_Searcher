@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.activity_main_rv_item.view.*
 
 class MainAdapter(
     private var onListItemClickListener: OnListItemClickListener,
-    private var data: List<DataModel>
+    private var data: List<DataModel> = arrayListOf()
 ) :
     RecyclerView.Adapter<MainAdapter.RecyclerItemViewHolder>() {
 
