@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wordssearcher.R
 import com.example.wordssearcher.model.data.DataModel
+import kotlinx.android.synthetic.main.activity_main_rv_item.view.*
 
 class MainAdapter(
     private var onListItemClickListener: OnListItemClickListener,
@@ -27,7 +28,7 @@ class MainAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
-        holder.bind(data.get(position))
+        holder.bind(data[position])
     }
 
     override fun getItemCount(): Int {
@@ -38,8 +39,8 @@ class MainAdapter(
 
         fun bind(data: DataModel) {
             if (layoutPosition != RecyclerView.NO_POSITION) {
-                itemView.findViewById<TextView>(R.id.header_textview_recycler_item).text = data.text
-                itemView.findViewById<TextView>(R.id.description_textview_recycler_item).text =
+                itemView.header_textview_recycler_item.text = data.text
+                itemView.description_textview_recycler_item.text =
                     data.meanings?.get(0)?.translation?.translation
                 itemView.setOnClickListener { openInNewWindow(data) }
             }

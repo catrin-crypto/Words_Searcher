@@ -1,4 +1,4 @@
-package com.example.wordssearcher.presenter
+package com.example.wordssearcher.viewmodel
 
 import io.reactivex.Observable
 
