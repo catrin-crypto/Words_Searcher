@@ -1,11 +1,22 @@
 package com.example.wordssearcher.model.datasource
 
+import com.example.wordssearcher.model.data.AppState
 import com.example.wordssearcher.model.data.DataModel
-import io.reactivex.Observable
+import com.example.wordssearcher.model.data.room.HistoryDao
+import com.example.wordssearcher.utils.convertDataModelSuccessToEntity
+import com.example.wordssearcher.utils.mapHistoryEntityToSearchResult
 
-class RoomDataBaseImpl  : DataSource<List<DataModel>> {
+class RoomDataBaseImpl(private val historyDao: HistoryDao) : DataSourceLocal<List<DataModel>> {
 
     override suspend fun getData(word: String): List<DataModel> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return mapHistoryEntityToSearchResult(historyDao.all())
     }
+
+    override suspend fun saveToBD(appState: AppState) {
+        convertDataModelSuccessToEntity(appState)?.let {
+            historyDao.insert(it)
+        }
+    }
+
 }
+

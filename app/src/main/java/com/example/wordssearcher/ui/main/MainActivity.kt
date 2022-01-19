@@ -1,6 +1,9 @@
 package com.example.wordssearcher.ui.main
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.Toast
@@ -10,15 +13,15 @@ import com.example.wordssearcher.databinding.ActivityMainBinding
 import com.example.wordssearcher.model.data.AppState
 import com.example.wordssearcher.model.data.DataModel
 import com.example.wordssearcher.ui.base.BaseActivity
+import com.example.wordssearcher.ui.history.HistoryActivity
 import com.example.wordssearcher.ui.main.adapter.MainAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : BaseActivity<AppState, MainInteractor>() {
 
     private lateinit var binding: ActivityMainBinding
-    override lateinit var model: MainActivityViewModel
+    override val model: MainActivityViewModel by viewModel()
     private val adapter: MainAdapter by lazy { MainAdapter(onListItemClickListener) }
-
     private val onListItemClickListener: MainAdapter.OnListItemClickListener =
         object : MainAdapter.OnListItemClickListener {
             override fun onItemClick(data: DataModel) {
@@ -41,6 +44,21 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
                 }
             })
             searchDialogFragment.show(supportFragmentManager, BOTTOM_SHEET_FRAGMENT_DIALOG_TAG)
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.history_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_history -> {
+                startActivity(Intent(this, HistoryActivity::class.java))
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
@@ -102,9 +120,7 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
         if (binding.mainActivityRecyclerview.adapter != null) {
             throw IllegalStateException("The ViewModel should be initialised first")
         }
-        val viewModel: MainActivityViewModel by viewModel()
-        model = viewModel
-        model.subscribe().observe(this@MainActivity, { renderData(it) })
+         model.subscribe().observe(this@MainActivity, { renderData(it) })
     }
 
     private fun initViews() {

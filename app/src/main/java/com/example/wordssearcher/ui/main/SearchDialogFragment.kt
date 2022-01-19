@@ -6,6 +6,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.wordssearcher.R
 import com.example.wordssearcher.databinding.FragmentSearchDialogBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
@@ -67,7 +68,7 @@ class SearchDialogFragment : BottomSheetDialogFragment() {
 
     private fun addOnClearClickListener() {
         binding.clearTextImageview.setOnClickListener {
-            binding.searchEditText.setText("")
+            binding.searchEditText.setText(R.string.empty_string)
             binding.searchButtonTextview.isEnabled = false
         }
     }
