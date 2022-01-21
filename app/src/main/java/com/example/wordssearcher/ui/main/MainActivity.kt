@@ -1,6 +1,7 @@
 package com.example.wordssearcher.ui.main
 
 import android.content.Intent
+import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -8,6 +9,13 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import coil.ImageLoader
+import coil.decode.GifDecoder
+import coil.decode.ImageDecoderDecoder
+import coil.load
+import coil.request.ImageRequest
+import coil.transform.BlurTransformation
+import coil.transform.RoundedCornersTransformation
 import com.example.wordssearcher.R
 import com.example.wordssearcher.databinding.ActivityMainBinding
 import com.example.wordssearcher.model.data.AppState
@@ -16,7 +24,7 @@ import com.example.wordssearcher.ui.base.BaseActivity
 import com.example.wordssearcher.ui.history.HistoryActivity
 import com.example.wordssearcher.ui.main.adapter.MainAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
-
+const val GIFCAT = "https://upload.wikimedia.org/wikipedia/ru/archive/6/6b/20210505175821%21NyanCat.gif"
 class MainActivity : BaseActivity<AppState, MainInteractor>() {
 
     private lateinit var binding: ActivityMainBinding
@@ -45,6 +53,23 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
             })
             searchDialogFragment.show(supportFragmentManager, BOTTOM_SHEET_FRAGMENT_DIALOG_TAG)
         }
+
+//        binding.gifImage.load(GIFCAT){
+//            crossfade(1500)
+//            transformations(BlurTransformation(this@MainActivity, 5f, 7f),
+//                RoundedCornersTransformation(10f))
+//        }
+        val reguest= ImageRequest.Builder(this)
+            .data(GIFCAT)
+            .crossfade(1500)
+            .target(binding.gifImage)
+            .build()
+        val imageLoader = ImageLoader.Builder(this)
+            .componentRegistry{if (SDK_INT >= 28){
+                add(ImageDecoderDecoder(this@MainActivity))
+            }else{add(GifDecoder()) }}.build()
+
+        imageLoader.enqueue(reguest)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
