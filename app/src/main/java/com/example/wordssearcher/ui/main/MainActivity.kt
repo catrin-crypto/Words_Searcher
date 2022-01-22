@@ -12,10 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import coil.ImageLoader
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
-import coil.load
 import coil.request.ImageRequest
-import coil.transform.BlurTransformation
-import coil.transform.RoundedCornersTransformation
 import com.example.wordssearcher.R
 import com.example.wordssearcher.databinding.ActivityMainBinding
 import com.example.wordssearcher.model.data.AppState

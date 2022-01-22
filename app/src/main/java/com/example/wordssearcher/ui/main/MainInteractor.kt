@@ -5,7 +5,7 @@ import com.example.wordssearcher.model.data.DataModel
 import com.example.wordssearcher.model.repository.Repository
 import com.example.wordssearcher.model.repository.RepositoryLocal
 import com.example.wordssearcher.viewmodel.Interactor
-import io.reactivex.Observable
+//import io.reactivex.Observable
 
 class MainInteractor(
     private val remoteRepository: Repository<List<DataModel>>,

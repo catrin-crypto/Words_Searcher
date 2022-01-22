@@ -1,6 +1,6 @@
 package com.example.wordssearcher.viewmodel
 
-import io.reactivex.Observable
+//import io.reactivex.Observable
 
 interface Interactor <T> {
 
