@@ -3,10 +3,9 @@ package com.example.wordssearcher.ui.main.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.model.data.DataModel
 import com.example.wordssearcher.R
-import com.example.wordssearcher.model.data.DataModel
 import kotlinx.android.synthetic.main.activity_main_rv_item.view.*
 
 class MainAdapter(

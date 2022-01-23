@@ -3,14 +3,12 @@ package com.example.wordssearcher.ui.history
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import com.example.model.data.AppState
 import com.example.wordssearcher.R
 import com.example.wordssearcher.databinding.ActivityHistoryBinding
 import com.example.wordssearcher.databinding.LoadingLayoutBinding
-import com.example.wordssearcher.model.data.AppState
-import com.example.wordssearcher.model.data.DataModel
 import com.example.wordssearcher.ui.base.BaseActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.Observer
 
 
 class HistoryActivity  : BaseActivity<AppState, HistoryInteractor>() {
@@ -66,7 +64,7 @@ class HistoryActivity  : BaseActivity<AppState, HistoryInteractor>() {
                 if (appState.progress != null) {
                     bindingLayout.progressBarHorizontal.visibility = View.VISIBLE
                     bindingLayout.progressBarRound.visibility = View.GONE
-                    bindingLayout.progressBarHorizontal.progress = appState.progress
+                    bindingLayout.progressBarHorizontal.progress = appState.progress!!
                 } else {
                     bindingLayout.progressBarHorizontal.visibility = View.GONE
                     bindingLayout.progressBarRound.visibility = View.VISIBLE

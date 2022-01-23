@@ -1,8 +1,8 @@
 package com.example.wordssearcher.utils
 
-import com.example.wordssearcher.model.data.AppState
-import com.example.wordssearcher.model.data.DataModel
-import com.example.wordssearcher.model.data.room.HistoryEntity
+import com.example.model.data.AppState
+import com.example.model.data.DataModel
+import com.example.wordssearcher.model.room.HistoryEntity
 
 fun String.Companion.getEmptyString(): String = ""
 

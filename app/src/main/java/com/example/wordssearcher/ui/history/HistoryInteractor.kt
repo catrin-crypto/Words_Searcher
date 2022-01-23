@@ -1,7 +1,7 @@
 package com.example.wordssearcher.ui.history
 
-import com.example.wordssearcher.model.data.AppState
-import com.example.wordssearcher.model.data.DataModel
+import com.example.model.data.AppState
+import com.example.model.data.DataModel
 import com.example.wordssearcher.model.repository.Repository
 import com.example.wordssearcher.model.repository.RepositoryLocal
 import com.example.wordssearcher.viewmodel.Interactor

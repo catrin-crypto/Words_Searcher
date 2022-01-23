@@ -1,4 +1,4 @@
-package com.example.wordssearcher.model.data.room
+package com.example.wordssearcher.model.room
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

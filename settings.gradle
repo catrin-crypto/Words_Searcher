@@ -1,2 +1,3 @@
 rootProject.name = "Words Searcher"
 include ':app'
+include ':model'

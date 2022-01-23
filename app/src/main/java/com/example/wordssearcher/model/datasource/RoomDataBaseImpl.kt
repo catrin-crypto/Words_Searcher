@@ -1,8 +1,8 @@
 package com.example.wordssearcher.model.datasource
 
-import com.example.wordssearcher.model.data.AppState
-import com.example.wordssearcher.model.data.DataModel
-import com.example.wordssearcher.model.data.room.HistoryDao
+import com.example.model.data.AppState
+import com.example.model.data.DataModel
+import com.example.wordssearcher.model.room.HistoryDao
 import com.example.wordssearcher.utils.convertDataModelSuccessToEntity
 import com.example.wordssearcher.utils.mapHistoryEntityToSearchResult
 

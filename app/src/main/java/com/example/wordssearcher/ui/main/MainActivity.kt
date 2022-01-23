@@ -13,10 +13,10 @@ import coil.ImageLoader
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
+import com.example.model.data.AppState
+import com.example.model.data.DataModel
 import com.example.wordssearcher.R
 import com.example.wordssearcher.databinding.ActivityMainBinding
-import com.example.wordssearcher.model.data.AppState
-import com.example.wordssearcher.model.data.DataModel
 import com.example.wordssearcher.ui.base.BaseActivity
 import com.example.wordssearcher.ui.history.HistoryActivity
 import com.example.wordssearcher.ui.main.adapter.MainAdapter
@@ -100,7 +100,7 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
                 if (appState.progress != null) {
                     binding.progressBarHorizontal.visibility = VISIBLE
                     binding.progressBarRound.visibility = GONE
-                    binding.progressBarHorizontal.progress = appState.progress
+                    binding.progressBarHorizontal.progress = appState.progress !!
                 } else {
                     binding.progressBarHorizontal.visibility = GONE
                     binding.progressBarRound.visibility = VISIBLE

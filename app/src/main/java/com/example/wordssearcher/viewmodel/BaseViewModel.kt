@@ -2,7 +2,7 @@ package com.example.wordssearcher.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.wordssearcher.model.data.AppState
+import com.example.model.data.AppState
 import kotlinx.coroutines.*
 
 abstract class BaseViewModel <T : AppState>(

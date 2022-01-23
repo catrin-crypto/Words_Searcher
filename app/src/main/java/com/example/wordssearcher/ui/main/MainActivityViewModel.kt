@@ -1,7 +1,7 @@
 package com.example.wordssearcher.ui.main
 
 import androidx.lifecycle.LiveData
-import com.example.wordssearcher.model.data.AppState
+import com.example.model.data.AppState
 import com.example.wordssearcher.viewmodel.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

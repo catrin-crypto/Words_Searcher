@@ -1,8 +1,8 @@
 package com.example.wordssearcher.di
 
 import androidx.room.Room
-import com.example.wordssearcher.model.data.DataModel
-import com.example.wordssearcher.model.data.room.HistoryDatabase
+import com.example.model.data.DataModel
+import com.example.wordssearcher.model.room.HistoryDatabase
 import com.example.wordssearcher.model.repository.RepositoryImplLocal
 import com.example.wordssearcher.model.repository.RepositoryLocal
 import com.example.wordssearcher.model.datasource.RetrofitImpl

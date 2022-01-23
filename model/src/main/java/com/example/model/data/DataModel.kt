@@ -1,4 +1,4 @@
-package com.example.wordssearcher.model.data
+package com.example.model.data
 
 import com.google.gson.annotations.SerializedName
 
