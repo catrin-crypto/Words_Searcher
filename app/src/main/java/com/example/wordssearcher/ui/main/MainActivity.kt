@@ -21,6 +21,7 @@ import com.example.wordssearcher.ui.base.BaseActivity
 import com.example.wordssearcher.ui.history.HistoryActivity
 import com.example.wordssearcher.ui.main.adapter.MainAdapter
 import org.koin.android.scope.currentScope
+import kotlin.properties.Delegates
 
 const val GIFCAT = "https://upload.wikimedia.org/wikipedia/ru/archive/6/6b/20210505175821%21NyanCat.gif"
 
@@ -69,6 +70,26 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
             }else{add(GifDecoder()) }}.build()
 
         imageLoader.enqueue(reguest)
+
+
+        VetoDelegate.vetoValue = 5
+        println("CCC ${VetoDelegate.vetoValue}")
+
+        VetoDelegate.vetoValue = 32
+        println("CCC ${VetoDelegate.vetoValue}")
+
+        VetoDelegate.vetoValue = 9
+        println("CCC ${VetoDelegate.vetoValue}")
+
+        VetoDelegate.vetoValue = 90
+        println("CCC ${VetoDelegate.vetoValue}")
+
+        VetoDelegate.vetoValue = 1
+        println("CCC ${VetoDelegate.vetoValue}")
+
+        VetoDelegate.vetoValue = 22
+        println("CCC ${VetoDelegate.vetoValue}")
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -157,5 +178,10 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
     companion object {
         private const val BOTTOM_SHEET_FRAGMENT_DIALOG_TAG =
             "74a54328-5d62-46bf-ab6b-cbf5fgt0-092395"
+    }
+}
+object VetoDelegate{
+    var vetoValue by Delegates.vetoable(22){
+        property, oldValue, newValue ->  newValue >= oldValue
     }
 }
