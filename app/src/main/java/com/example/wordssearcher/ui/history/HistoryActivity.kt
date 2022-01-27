@@ -8,10 +8,9 @@ import com.example.wordssearcher.R
 import com.example.wordssearcher.databinding.ActivityHistoryBinding
 import com.example.wordssearcher.databinding.LoadingLayoutBinding
 import com.example.wordssearcher.ui.base.BaseActivity
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.android.scope.currentScope
 
-
-class HistoryActivity  : BaseActivity<AppState, HistoryInteractor>() {
+class HistoryActivity : BaseActivity<AppState, HistoryInteractor>() {
 
     private lateinit var binding: ActivityHistoryBinding
     private lateinit var bindingLayout : LoadingLayoutBinding
@@ -37,7 +36,7 @@ class HistoryActivity  : BaseActivity<AppState, HistoryInteractor>() {
         if (binding.historyActivityRecyclerview.adapter != null) {
             throw IllegalStateException("The ViewModel should be initialised first")
         }
-        val viewModel: HistoryViewModel by viewModel()
+        val viewModel: HistoryViewModel by currentScope.inject()
         model = viewModel
         model.subscribe().observe(this@HistoryActivity, { renderData(it) })
     }

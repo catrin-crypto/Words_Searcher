@@ -20,12 +20,14 @@ import com.example.wordssearcher.databinding.ActivityMainBinding
 import com.example.wordssearcher.ui.base.BaseActivity
 import com.example.wordssearcher.ui.history.HistoryActivity
 import com.example.wordssearcher.ui.main.adapter.MainAdapter
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.android.scope.currentScope
+
 const val GIFCAT = "https://upload.wikimedia.org/wikipedia/ru/archive/6/6b/20210505175821%21NyanCat.gif"
+
 class MainActivity : BaseActivity<AppState, MainInteractor>() {
 
     private lateinit var binding: ActivityMainBinding
-    override val model: MainActivityViewModel by viewModel()
+    override lateinit var model: MainActivityViewModel
     private val adapter: MainAdapter by lazy { MainAdapter(onListItemClickListener) }
     private val onListItemClickListener: MainAdapter.OnListItemClickListener =
         object : MainAdapter.OnListItemClickListener {
@@ -142,7 +144,9 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
         if (binding.mainActivityRecyclerview.adapter != null) {
             throw IllegalStateException("The ViewModel should be initialised first")
         }
-         model.subscribe().observe(this@MainActivity, { renderData(it) })
+        val viewModel: MainActivityViewModel by currentScope.inject()
+        model = viewModel
+        model.subscribe().observe(this@MainActivity, { renderData(it) })
     }
 
     private fun initViews() {

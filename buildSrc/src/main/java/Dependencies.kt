@@ -38,8 +38,9 @@ object Versions {
     const val adapterCoroutines = "0.9.2"
 
     //Koin
-    const val koinAndroid = "3.1.2"
-    const val koinViewModel = "3.1.2"
+    const val koinAndroid = "2.1.6"
+    const val koinViewModel = "2.1.6"
+    //const val koinScope = "2.1.6"
 
     //Coil
     const val coil = "1.3.2"
@@ -80,10 +81,11 @@ object Retrofit {
 }
 
 object Koin {
-    const val koin_core = "io.insert-koin:koin-core:${Versions.koinAndroid}"
+   // const val koin_core = "io.insert-koin:koin-core:${Versions.koinAndroid}"
     const val koin_android = "io.insert-koin:koin-android:${Versions.koinAndroid}"
-    const val koin_android_compat = "io.insert-koin:koin-android-compat:${Versions.koinAndroid}"
-    //const val koin_view_model = "io.insert-koin:koin-android-viewmodel:${Versions.koinViewModel}"
+    //const val koin_android_compat = "io.insert-koin:koin-android-compat:${Versions.koinAndroid}"
+    //const val koin_scope = " io.insert-koin:koin-android-scope:${Versions.koinScope}"
+    const val koin_view_model = "io.insert-koin:koin-android-viewmodel:${Versions.koinViewModel}"
 }
 
 object Coil {
