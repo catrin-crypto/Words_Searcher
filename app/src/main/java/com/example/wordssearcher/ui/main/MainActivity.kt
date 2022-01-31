@@ -1,13 +1,23 @@
 package com.example.wordssearcher.ui.main
 
+import android.animation.ObjectAnimator
 import android.content.Intent
+import android.graphics.RenderEffect
+import android.graphics.Shader
+import android.os.Build
 import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.view.ViewTreeObserver
+import android.view.animation.AnticipateInterpolator
 import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.core.animation.doOnEnd
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.ImageLoader
 import coil.decode.GifDecoder
@@ -23,7 +33,11 @@ import com.example.wordssearcher.ui.main.adapter.MainAdapter
 import org.koin.android.scope.currentScope
 import kotlin.properties.Delegates
 
-const val GIFCAT = "https://upload.wikimedia.org/wikipedia/ru/archive/6/6b/20210505175821%21NyanCat.gif"
+private const val SLIDE_RIGHT_DURATION = 2000L
+private const val COUNTDOWN_DURATION = 2000L
+private const val COUNTDOWN_INTERVAL = 1000L
+const val GIFCAT =
+    "https://upload.wikimedia.org/wikipedia/ru/archive/6/6b/20210505175821%21NyanCat.gif"
 
 class MainActivity : BaseActivity<AppState, MainInteractor>() {
 
@@ -41,6 +55,7 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setSplashScreen()
         initViewModel()
         initViews()
         binding.searchFab.setOnClickListener {
@@ -59,18 +74,27 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
 //            transformations(BlurTransformation(this@MainActivity, 5f, 7f),
 //                RoundedCornersTransformation(10f))
 //        }
-        val reguest= ImageRequest.Builder(this)
+        val reguest = ImageRequest.Builder(this)
             .data(GIFCAT)
             .crossfade(1500)
             .target(binding.gifImage)
             .build()
         val imageLoader = ImageLoader.Builder(this)
-            .componentRegistry{if (SDK_INT >= 28){
-                add(ImageDecoderDecoder(this@MainActivity))
-            }else{add(GifDecoder()) }}.build()
+            .componentRegistry {
+                if (SDK_INT >= 28) {
+                    add(ImageDecoderDecoder(this@MainActivity))
+                } else {
+                    add(GifDecoder())
+                }
+            }.build()
 
         imageLoader.enqueue(reguest)
 
+        binding.gifImage.setOnClickListener {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                it.setRenderEffect(RenderEffect.createBlurEffect(30f, 0f, Shader.TileMode.DECAL))
+            }
+        }
 
         VetoDelegate.vetoValue = 5
         println("CCC ${VetoDelegate.vetoValue}")
@@ -90,6 +114,53 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
         VetoDelegate.vetoValue = 22
         println("CCC ${VetoDelegate.vetoValue}")
 
+    }
+
+    private fun setSplashScreen() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            setSplashScreenAnimation()
+        }
+        setSplashScreenDuration()
+    }
+
+    @RequiresApi(31)
+    private fun setSplashScreenAnimation() {
+        splashScreen.setOnExitAnimationListener { splashScreenView ->
+            val slideRight = ObjectAnimator.ofFloat(
+                splashScreenView, View.TRANSLATION_X, 0f,
+                splashScreenView.height.toFloat()
+            ).apply {
+                interpolator = AnticipateInterpolator()
+                duration = SLIDE_RIGHT_DURATION
+                doOnEnd { splashScreenView.remove() }
+
+            }.start()
+        }
+    }
+
+    private fun setSplashScreenDuration() {
+        var isHideSplashScreen = false
+
+        object : CountDownTimer(COUNTDOWN_DURATION, COUNTDOWN_INTERVAL) {
+            override fun onTick(millisUntilFinished: Long) {}
+            override fun onFinish() {
+                isHideSplashScreen = true
+            }
+        }.start()
+
+        val content: View = findViewById(android.R.id.content)
+        content.viewTreeObserver.addOnPreDrawListener(
+            object : ViewTreeObserver.OnPreDrawListener {
+                override fun onPreDraw(): Boolean {
+                    return if (isHideSplashScreen) {
+                        content.viewTreeObserver.removeOnPreDrawListener(this)
+                        true
+                    } else {
+                        false
+                    }
+                }
+            }
+        )
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -123,7 +194,7 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
                 if (appState.progress != null) {
                     binding.progressBarHorizontal.visibility = VISIBLE
                     binding.progressBarRound.visibility = GONE
-                    binding.progressBarHorizontal.progress = appState.progress !!
+                    binding.progressBarHorizontal.progress = appState.progress!!
                 } else {
                     binding.progressBarHorizontal.visibility = GONE
                     binding.progressBarRound.visibility = VISIBLE
@@ -180,8 +251,9 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
             "74a54328-5d62-46bf-ab6b-cbf5fgt0-092395"
     }
 }
-object VetoDelegate{
-    var vetoValue by Delegates.vetoable(22){
-        property, oldValue, newValue ->  newValue >= oldValue
+
+object VetoDelegate {
+    var vetoValue by Delegates.vetoable(22) { property, oldValue, newValue ->
+        newValue >= oldValue
     }
 }

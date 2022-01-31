@@ -11,4 +11,7 @@
     <string name="delete_searching_word">X</string>
     <string name="empty_string"> </string>
     <string name="history">History</string>
+    <string name="appwidget_text">Welcome to WordsSearcher</string>
+    <string name="add_widget">Add widget</string>
+    <string name="app_widget_description">This is an app widget description</string>
 </resources>
