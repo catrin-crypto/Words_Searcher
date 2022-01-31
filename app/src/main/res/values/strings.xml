@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">Words Searcher</string>
+    <string name="error_tv">error</string>
+    <string name="reload_btn">reload</string>
+    <string name="undefined_error">Undefined error</string>
+    <string name="empty_server_response_on_success">Response from server is empty</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="search_btn">search</string>
+    <string name="search_hint">New word</string>
+    <string name="delete_searching_word">X</string>
+    <string name="empty_string"> </string>
+    <string name="history">History</string>
+    <string name="appwidget_text">Welcome to WordsSearcher</string>
+    <string name="add_widget">Add widget</string>
+    <string name="app_widget_description">This is an app widget description</string>
 </resources>
