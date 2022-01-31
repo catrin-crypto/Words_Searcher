@@ -36,6 +36,8 @@ import kotlin.properties.Delegates
 private const val SLIDE_RIGHT_DURATION = 2000L
 private const val COUNTDOWN_DURATION = 2000L
 private const val COUNTDOWN_INTERVAL = 1000L
+private const val BLUR_RAD_X = 30f
+private const val BLUR_RAD_Y = 0f
 const val GIFCAT =
     "https://upload.wikimedia.org/wikipedia/ru/archive/6/6b/20210505175821%21NyanCat.gif"
 
@@ -92,7 +94,7 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
 
         binding.gifImage.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                it.setRenderEffect(RenderEffect.createBlurEffect(30f, 0f, Shader.TileMode.DECAL))
+                it.setRenderEffect(RenderEffect.createBlurEffect(BLUR_RAD_X, BLUR_RAD_Y, Shader.TileMode.DECAL))
             }
         }
 
